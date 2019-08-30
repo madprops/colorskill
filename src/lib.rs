@@ -13,7 +13,8 @@ const DEGREES_3: f64 = 45.0;
 /// A fallback RGB tuple must be provided
 /// Example:
 /// ```
-/// color_name_to_rgb("firebrick", (0, 0, 0))
+/// use colorskill::color_name_to_rgb;
+/// color_name_to_rgb("firebrick", (0, 0, 0));
 /// ```
 pub fn color_name_to_rgb(name: &str, fallback: (u8, u8, u8)) -> (u8, u8, u8)
 {
@@ -172,7 +173,8 @@ pub fn color_name_to_rgb(name: &str, fallback: (u8, u8, u8)) -> (u8, u8, u8)
 /// Checks if a color name exists
 /// /// Example:
 /// ```
-/// check_color_name("silver")
+/// use colorskill::check_color_name;
+/// check_color_name("silver");
 /// ```
 pub fn check_color_name(name: &str) -> bool
 {
@@ -187,7 +189,8 @@ pub fn check_color_name(name: &str) -> bool
 /// (0, 0, 0) -> "0,0,0"
 /// /// Example:
 /// ```
-/// color_to_string((100, 143, 49))
+/// use colorskill::color_to_string;
+/// color_to_string((100, 143, 49));
 /// ```
 pub fn color_to_string(c: (u8, u8, u8)) -> String
 {
@@ -200,7 +203,8 @@ pub fn color_to_string(c: (u8, u8, u8)) -> String
 /// (0, 0, 0) -> "0, 0, 0"
 /// /// /// Example:
 /// ```
-/// color_to_string_2((100, 143, 49))
+/// use colorskill::color_to_string_2;
+/// color_to_string_2((100, 143, 49));
 /// ```
 pub fn color_to_string_2(c: (u8, u8, u8)) -> String
 {
@@ -213,7 +217,8 @@ pub fn color_to_string_2(c: (u8, u8, u8)) -> String
 /// (0, 0, 0) -> "(0,0,0)"
 /// /// /// Example:
 /// ```
-/// color_to_string_3((100, 143, 49))
+/// use colorskill::color_to_string_3;
+/// color_to_string_3((100, 143, 49));
 /// ```
 pub fn color_to_string_3(c: (u8, u8, u8)) -> String
 {
@@ -227,7 +232,8 @@ pub fn color_to_string_3(c: (u8, u8, u8)) -> String
 /// (0, 0, 0) -> "(0, 0, 0)"
 /// /// /// Example:
 /// ```
-/// color_to_string_4((100, 143, 49))
+/// use colorskill::color_to_string_4;
+/// color_to_string_4((100, 143, 49));
 /// ```
 pub fn color_to_string_4(c: (u8, u8, u8)) -> String
 {
@@ -237,7 +243,8 @@ pub fn color_to_string_4(c: (u8, u8, u8)) -> String
 /// Generates a random RGB tuple
 /// /// /// Example:
 /// ```
-/// random_color()
+/// use colorskill::random_color;
+/// random_color();
 /// ```
 pub fn random_color() -> (u8, u8, u8)
 {
@@ -267,10 +274,11 @@ pub fn random_color() -> (u8, u8, u8)
 /// DEGREES_3: f64 = 45.0
 /// /// /// Examples:
 /// ```
-/// parse_color("blue", (0, 0, 0))
-/// parse_color("34,65,39", (0, 0, 0))
-/// parse_color("darker", (10, 34, 50))
-/// parse_color("random", (0, 0, 0))
+/// use colorskill::parse_color;
+/// parse_color("blue", (0, 0, 0));
+/// parse_color("34,65,39", (0, 0, 0));
+/// parse_color("darker", (10, 34, 50));
+/// parse_color("random", (0, 0, 0));
 /// ```
 pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
 {
@@ -310,9 +318,10 @@ pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
 /// Receives a tuple and the amount to make darker
 /// /// /// Example:
 /// ```
-/// make_color_darker((43, 56, 84), 20.0)
+/// use colorskill::make_color_darker;
+/// make_color_darker((43, 56, 84), 20.0);
 /// ```
-fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
+pub fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 {
     change_color_lightness(t, true, amount)
 }
@@ -321,9 +330,10 @@ fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 /// Receives a tuple and the amount to make lighter
 /// /// /// /// Example:
 /// ```
-/// make_color_lighter((43, 56, 84), 20.0)
+/// use colorskill::make_color_lighter;
+/// make_color_lighter((43, 56, 84), 20.0);
 /// ```
-fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
+pub fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 {
     change_color_lightness(t, false, amount)
 }
@@ -335,7 +345,8 @@ fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 /// darker or lighter
 /// /// /// /// Example:
 /// ```
-/// change_color_lightness((43, 56, 84), true, 20.0)
+/// use colorskill::change_color_lightness;
+/// change_color_lightness((43, 56, 84), true, 20.0);
 /// ```
 pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8, u8, u8)
 {
