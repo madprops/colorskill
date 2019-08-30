@@ -1,6 +1,6 @@
 [package]
 name = "colorskill"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["madprops"]
 edition = "2018"
 description = "Some useful color manipulation functions"

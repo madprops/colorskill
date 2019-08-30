@@ -7,10 +7,10 @@ const DEGREES_1: f64 = 15.0;
 const DEGREES_2: f64 = 30.0;
 const DEGREES_3: f64 = 45.0;
 
-/// Gets an RGB tuple from a color name
-/// The input is lowercased and the whitespaces are removed
-/// So "Light Blue" will match "lightblue"
-/// A fallback RGB tuple must be provided
+/// Gets an RGB tuple from a color name.
+/// The input is lowercased and the whitespaces are removed.
+/// So "Light Blue" will match "lightblue".
+/// A fallback RGB tuple must be provided.
 /// ```
 /// use colorskill::color_name_to_rgb;
 /// let c = color_name_to_rgb("firebrick", (0, 0, 0));
@@ -169,7 +169,7 @@ pub fn color_name_to_rgb(name: &str, fallback: (u8, u8, u8)) -> (u8, u8, u8)
     }
 }
 
-/// Checks if a color name exists
+/// Checks if a color name exists.
 /// ```
 /// use colorskill::check_color_name;
 /// let exists = check_color_name("silver");
@@ -182,11 +182,11 @@ pub fn check_color_name(name: &str) -> bool
     rgb != (255, 255, 255)
 }
 
-/// Turns a color darker or lighter
-/// The amount represents HSL lightness degrees
-/// Lightness goes from 0 to 359 degrees
+/// Turns a color darker or lighter.
+/// The amount represents HSL lightness degrees.
+/// Lightness goes from 0 to 359 degrees.
 /// The bigger the amount, the more it gets
-/// darker or lighter
+/// darker or lighter.
 /// ```
 /// use colorskill::change_color_lightness;
 /// let c = change_color_lightness((43, 56, 84), true, 20.0);
@@ -232,8 +232,8 @@ pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8
     )
 }
 
-/// Wrapper function to make a color darker
-/// Receives a tuple and the amount to make darker
+/// Wrapper function to make a color darker.
+/// Receives a tuple and the amount to make darker.
 /// ```
 /// use colorskill::make_color_darker;
 /// let c = make_color_darker((43, 56, 84), 20.0);
@@ -243,8 +243,8 @@ pub fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
     change_color_lightness(t, true, amount)
 }
 
-/// Wrapper function to make a color lighter
-/// Receives a tuple and the amount to make lighter
+/// Wrapper function to make a color lighter.
+/// Receives a tuple and the amount to make lighter.
 /// ```
 /// use colorskill::make_color_lighter;
 /// let c = make_color_lighter((43, 56, 84), 20.0);
@@ -254,7 +254,7 @@ pub fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
     change_color_lightness(t, false, amount)
 }
 
-/// Generates a random RGB tuple
+/// Generates a random RGB tuple.
 /// ```
 /// use colorskill::random_color;
 /// let c = random_color();
@@ -272,8 +272,8 @@ pub fn random_color() -> (u8, u8, u8)
     (v[0], v[1], v[2])
 }
 
-/// Converts a color tuple
-/// into a comma separated string
+/// Converts an RGB tuple
+/// into a comma separated string.
 /// (0, 0, 0) -> "0,0,0"
 /// ```
 /// use colorskill::color_to_string;
@@ -284,9 +284,9 @@ pub fn color_to_string(c: (u8, u8, u8)) -> String
     format!("{},{},{}", c.0, c.1, c.2)
 }
 
-/// Converts a color tuple
+/// Converts an RGB tuple
 /// into a comma separated string
-/// with spaces after commas
+/// with spaces after commas.
 /// (0, 0, 0) -> "0, 0, 0"
 /// ```
 /// use colorskill::color_to_string_2;
@@ -297,9 +297,9 @@ pub fn color_to_string_2(c: (u8, u8, u8)) -> String
     format!("{}, {}, {}", c.0, c.1, c.2)
 }
 
-/// Converts a color tuple
+/// Converts an RGB tuple
 /// into a comma separated string
-/// with added parenthesis
+/// with added parenthesis.
 /// (0, 0, 0) -> "(0,0,0)"
 /// ```
 /// use colorskill::color_to_string_3;
@@ -310,10 +310,10 @@ pub fn color_to_string_3(c: (u8, u8, u8)) -> String
     format!("({},{},{})", c.0, c.1, c.2)
 }
 
-/// Converts a color tuple
+/// Converts an RGB tuple
 /// into a comma separated string
 /// with added parenthesis
-/// and spaces after commas
+/// and spaces after commas.
 /// (0, 0, 0) -> "(0, 0, 0)"
 /// ```
 /// use colorskill::color_to_string_4;
@@ -324,19 +324,19 @@ pub fn color_to_string_4(c: (u8, u8, u8)) -> String
     format!("({}, {}, {})", c.0, c.1, c.2)
 }
 
-/// Parses a color string
-/// Useful for interpreting user input
+/// Parses a color string.
+/// Useful for interpreting user input.
 /// Valid inputs can be:
-/// "red", "0,0,0", "0, 0, 0"
-/// "darker", "darker2", "darker3"
-/// "lighter", "lighter2", "lighter3"
-/// or "random" to get a random color
-/// The input is lowercased and the whitespaces are removed
-/// darker3 turns it 3 times darker than darker
+/// "red", "0,0,0", "0, 0, 0",
+/// "darker", "darker2", "darker3",
+/// "lighter", "lighter2", "lighter3",
+/// or "random" to get a random color.
+/// The input is lowercased and the whitespaces are removed.
+/// darker3 turns it 3 times darker than darker.
 /// Degrees for darker and lighter are hardcoded:
-/// DEGREES_1: f64 = 15.0
-/// DEGREES_2: f64 = 30.0
-/// DEGREES_3: f64 = 45.0
+/// DEGREES_1: f64 = 15.0;
+/// DEGREES_2: f64 = 30.0;
+/// DEGREES_3: f64 = 45.0;
 /// ```
 /// use colorskill::parse_color;
 /// let c = parse_color("blue", (0, 0, 0));
@@ -380,6 +380,7 @@ pub fn parse_color(s: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
 
 // Utility Functions
 
+// Lowercase and remove whitespace
 fn clean_string(s: &str) -> String
 {
     s.to_lowercase().replace(" ", "")
