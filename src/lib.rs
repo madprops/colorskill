@@ -18,7 +18,7 @@ const DEGREES_3: f64 = 45.0;
 /// ```
 pub fn color_name_to_rgb(name: &str, fallback: (u8, u8, u8)) -> (u8, u8, u8)
 {
-    let cname = name.to_lowercase().replace(" ", "");
+    let cname = clean_string(name);
 
     match &cname[..]
     {
@@ -171,14 +171,14 @@ pub fn color_name_to_rgb(name: &str, fallback: (u8, u8, u8)) -> (u8, u8, u8)
 }
 
 /// Checks if a color name exists
-/// /// Example:
+/// Example:
 /// ```
 /// use colorskill::check_color_name;
 /// check_color_name("silver");
 /// ```
 pub fn check_color_name(name: &str) -> bool
 {
-    let cname = name.to_lowercase().replace(" ", "");
+    let cname = clean_string(name);
     if cname == "white" {return true}
     let rgb = color_name_to_rgb(name, (255, 255, 255));
     rgb != (255, 255, 255)
@@ -187,7 +187,7 @@ pub fn check_color_name(name: &str) -> bool
 /// Converts a color tuple
 /// into a comma separated string
 /// (0, 0, 0) -> "0,0,0"
-/// /// Example:
+/// Example:
 /// ```
 /// use colorskill::color_to_string;
 /// color_to_string((100, 143, 49));
@@ -201,7 +201,7 @@ pub fn color_to_string(c: (u8, u8, u8)) -> String
 /// into a comma separated string
 /// with spaces after commas
 /// (0, 0, 0) -> "0, 0, 0"
-/// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::color_to_string_2;
 /// color_to_string_2((100, 143, 49));
@@ -215,7 +215,7 @@ pub fn color_to_string_2(c: (u8, u8, u8)) -> String
 /// into a comma separated string
 /// with added parenthesis
 /// (0, 0, 0) -> "(0,0,0)"
-/// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::color_to_string_3;
 /// color_to_string_3((100, 143, 49));
@@ -230,7 +230,7 @@ pub fn color_to_string_3(c: (u8, u8, u8)) -> String
 /// with added parenthesis
 /// and spaces after commas
 /// (0, 0, 0) -> "(0, 0, 0)"
-/// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::color_to_string_4;
 /// color_to_string_4((100, 143, 49));
@@ -241,7 +241,7 @@ pub fn color_to_string_4(c: (u8, u8, u8)) -> String
 }
 
 /// Generates a random RGB tuple
-/// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::random_color;
 /// random_color();
@@ -272,7 +272,7 @@ pub fn random_color() -> (u8, u8, u8)
 /// DEGREES_1: f64 = 15.0
 /// DEGREES_2: f64 = 30.0
 /// DEGREES_3: f64 = 45.0
-/// /// /// Examples:
+/// Examples:
 /// ```
 /// use colorskill::parse_color;
 /// parse_color("blue", (0, 0, 0));
@@ -280,11 +280,11 @@ pub fn random_color() -> (u8, u8, u8)
 /// parse_color("darker", (10, 34, 50));
 /// parse_color("random", (0, 0, 0));
 /// ```
-pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
+pub fn parse_color(s: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
 {
-    let ans = ans.trim().to_lowercase().replace(" ", "");
+    let cs = clean_string(s);
 
-    match &ans[..]
+    match &cs[..]
     {
         // Check if color should be darker or lighter
         "darker" | "darker1" => make_color_darker(reference, DEGREES_1),
@@ -297,9 +297,9 @@ pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
         _ => 
         {
             // If not then check if it's an RGB value
-            if ans.contains(',')
+            if cs.contains(',')
             {
-                let v: Vec<u8> = ans.split(',')
+                let v: Vec<u8> = cs.split(',')
                     .map(|n| n.parse::<u8>().unwrap_or(0)).collect();
 
                 if v.len() != 3 {return reference} (v[0], v[1], v[2])
@@ -308,7 +308,7 @@ pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
             else
             {
                 // If not then check if it's a color name
-                color_name_to_rgb(&ans, reference)
+                color_name_to_rgb(&cs, reference)
             }
         }
     }
@@ -316,7 +316,7 @@ pub fn parse_color(ans: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
 
 /// Wrapper function to make a color darker
 /// Receives a tuple and the amount to make darker
-/// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::make_color_darker;
 /// make_color_darker((43, 56, 84), 20.0);
@@ -328,7 +328,7 @@ pub fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 
 /// Wrapper function to make a color lighter
 /// Receives a tuple and the amount to make lighter
-/// /// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::make_color_lighter;
 /// make_color_lighter((43, 56, 84), 20.0);
@@ -343,7 +343,7 @@ pub fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 /// Lightness goes from 0 to 359 degrees
 /// The bigger the amount, the more it gets
 /// darker or lighter
-/// /// /// /// Example:
+/// Example:
 /// ```
 /// use colorskill::change_color_lightness;
 /// change_color_lightness((43, 56, 84), true, 20.0);
@@ -450,4 +450,9 @@ mod tests
         assert_eq!(change_color_lightness((184,134,11), true, 15.0), (112, 81, 7));
         assert_eq!(change_color_lightness((184,134,11), false, 15.0), (242, 180, 30));
     }
+}
+
+fn clean_string(s: &str) -> String
+{
+    s.to_lowercase().replace(" ", "")
 }
