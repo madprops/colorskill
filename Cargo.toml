@@ -1,0 +1,18 @@
+[package]
+name = "colorskill"
+version = "1.0.0"
+authors = ["madprops"]
+edition = "2018"
+description = "Some useful color manipulation functions"
+license = "MIT"
+homepage = "https://github.com/madprops/colorskill"
+repository = "https://github.com/madprops/colorskill.git"
+keywords = ["colors", "converter", "rgb", "hsl"]
+categories = [ "graphics"]
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.7.0"
+colorsys = "0.5.3"
