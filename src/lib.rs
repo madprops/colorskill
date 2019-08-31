@@ -1,11 +1,13 @@
 use rand::Rng;
 use colorsys::{Rgb, Hsl};
 
-/// These are the degrees used to
+/// These are the percentages used to
 /// make colors darker or lighter
-const DEGREES_1: f64 = 15.0;
-const DEGREES_2: f64 = 30.0;
-const DEGREES_3: f64 = 45.0;
+const PERCENT_1: f64 = 10.0;
+const PERCENT_2: f64 = 20.0;
+const PERCENT_3: f64 = 30.0;
+const PERCENT_4: f64 = 40.0;
+const PERCENT_5: f64 = 50.0;
 
 /// Gets an RGB tuple from a color name.
 /// 
@@ -193,9 +195,9 @@ pub fn check_color_name(name: &str) -> bool
 
 /// Turns a color darker or lighter.
 /// 
-/// The amount represents HSL lightness degrees.
+/// The amount represents a HSL lightness percentage
+/// to increase or decrease.
 /// 
-/// Lightness goes from 0 to 359 degrees.
 /// 
 /// The bigger the amount, the more it gets
 /// darker or lighter.
@@ -222,7 +224,7 @@ pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8
 
     if darker
     {
-        // Decrease lightness by the specified degrees
+        // Decrease lightness by the specified percentage
         let mut lightness = current_lightness - amount;
         if lightness < 0.0 {lightness = 0.0}
         hsl.set_lightness(lightness);
@@ -230,9 +232,9 @@ pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8
 
     else
     {
-        // Increase lightness by the specified degrees
+        // Increase lightness by the specified percentage
         let mut lightness = current_lightness + amount;
-        if lightness > 359.0 {lightness = 359.0}
+        if lightness > 100.0 {lightness = 100.0}
         hsl.set_lightness(lightness);
     }
 
@@ -384,7 +386,11 @@ pub fn color_to_string_4(c: (u8, u8, u8), prepend: &str) -> String
 /// 
 /// "darker", "darker2", "darker3",
 /// 
+/// "darker4", "darker5",
+/// 
 /// "lighter", "lighter2", "lighter3",
+/// 
+/// "lighter4", "lighter5",
 /// 
 /// or "random".
 /// 
@@ -392,13 +398,13 @@ pub fn color_to_string_4(c: (u8, u8, u8), prepend: &str) -> String
 /// 
 /// darker3 turns it 3 times darker than darker.
 /// 
-/// Degrees for darker and lighter are hardcoded:
+/// Percentages for darker and lighter are hardcoded:
 /// 
-/// DEGREES_1: f64 = 15.0;
+/// PERCENT_1: f64 = 10.0;
 /// 
-/// DEGREES_2: f64 = 30.0;
+/// PERCENT_2: f64 = 20.0;
 /// 
-/// DEGREES_3: f64 = 45.0;
+/// And so on... up to PERCENT_5.
 /// 
 /// # Examples
 /// 
@@ -417,12 +423,16 @@ pub fn parse_color(s: &str, reference: (u8, u8, u8)) -> (u8, u8, u8)
     match &cs[..]
     {
         // Check if color should be darker or lighter
-        "darker" | "darker1" => make_color_darker(reference, DEGREES_1),
-        "darker2" => make_color_darker(reference, DEGREES_2),
-        "darker3" => make_color_darker(reference, DEGREES_3),
-        "lighter" | "lighter1" => make_color_lighter(reference, DEGREES_1),
-        "lighter2" => make_color_lighter(reference, DEGREES_2),
-        "lighter3" => make_color_lighter(reference, DEGREES_3),
+        "darker" | "darker1" => make_color_darker(reference, PERCENT_1),
+        "darker2" => make_color_darker(reference, PERCENT_2),
+        "darker3" => make_color_darker(reference, PERCENT_3),
+        "darker4" => make_color_darker(reference, PERCENT_4),
+        "darker5" => make_color_darker(reference, PERCENT_5),
+        "lighter" | "lighter1" => make_color_lighter(reference, PERCENT_1),
+        "lighter2" => make_color_lighter(reference, PERCENT_2),
+        "lighter3" => make_color_lighter(reference, PERCENT_3),
+        "lighter4" => make_color_lighter(reference, PERCENT_4),
+        "lighter5" => make_color_lighter(reference, PERCENT_5),
         "random" => random_color(),
         _ => 
         {
@@ -791,12 +801,18 @@ mod tests
     fn parse_test()
     {
         assert_eq!(parse_color("cadetblue", (0, 0, 0)), (95, 158, 160));
-        assert_eq!(parse_color("darker", (95, 158, 160)), (67, 111, 112));
-        assert_eq!(parse_color("darker2", (95, 158, 160)), (38, 63, 64));
-        assert_eq!(parse_color("darker3", (95, 158, 160)), (10, 16, 16));
-        assert_eq!(parse_color("lighter", (95, 158, 160)), (143, 187, 189));
-        assert_eq!(parse_color("lighter2", (95, 158, 160)), (191, 216, 217));
-        assert_eq!(parse_color("lighter3", (95, 158, 160)), (239, 245, 245));
+
+        assert_eq!(parse_color("darker", (95, 158, 160)), (76, 126, 128));
+        assert_eq!(parse_color("darker2", (95, 158, 160)), (57, 95, 96));
+        assert_eq!(parse_color("darker3", (95, 158, 160)), (38, 63, 64));
+        assert_eq!(parse_color("darker4", (95, 158, 160)), (19, 32, 32));
+        assert_eq!(parse_color("darker5", (95, 158, 160)), (0, 0, 0));
+
+        assert_eq!(parse_color("lighter", (95, 158, 160)), (127, 177, 179));
+        assert_eq!(parse_color("lighter2", (95, 158, 160)), (159, 197, 198));
+        assert_eq!(parse_color("lighter3", (95, 158, 160)), (191, 216, 217));
+        assert_eq!(parse_color("lighter4", (95, 158, 160)), (223, 236, 236));
+        assert_eq!(parse_color("lighter5", (95, 158, 160)), (255, 255, 255));
     }
 
     #[test]
@@ -851,9 +867,9 @@ mod tests
         let mut c2 = RGB::from_tuple((100, 90, 89));
 
         c2.change("lighter2");
-        assert_eq!(c2.get_red(), 176);
-        assert_eq!(c2.get_green(), 167);
-        assert_eq!(c2.get_blue(), 166);
+        assert_eq!(c2.get_red(), 152);
+        assert_eq!(c2.get_green(), 140);
+        assert_eq!(c2.get_blue(), 139);
 
         c2.randomize();
     }
