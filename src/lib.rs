@@ -803,12 +803,14 @@ mod tests
         assert_eq!(parse_color("cadetblue", (0, 0, 0)), (95, 158, 160));
 
         assert_eq!(parse_color("darker", (95, 158, 160)), (76, 126, 128));
+        assert_eq!(parse_color("darker1", (95, 158, 160)), (76, 126, 128));
         assert_eq!(parse_color("darker2", (95, 158, 160)), (57, 95, 96));
         assert_eq!(parse_color("darker3", (95, 158, 160)), (38, 63, 64));
         assert_eq!(parse_color("darker4", (95, 158, 160)), (19, 32, 32));
         assert_eq!(parse_color("darker5", (95, 158, 160)), (0, 0, 0));
 
         assert_eq!(parse_color("lighter", (95, 158, 160)), (127, 177, 179));
+        assert_eq!(parse_color("lighter1", (95, 158, 160)), (127, 177, 179));
         assert_eq!(parse_color("lighter2", (95, 158, 160)), (159, 197, 198));
         assert_eq!(parse_color("lighter3", (95, 158, 160)), (191, 216, 217));
         assert_eq!(parse_color("lighter4", (95, 158, 160)), (223, 236, 236));
