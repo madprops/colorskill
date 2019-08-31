@@ -210,16 +210,8 @@ pub fn check_color_name(name: &str) -> bool
 /// ```
 pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8, u8, u8)
 {
-    // Get RGB struct
-    let rgb = Rgb::from
-    ((
-        f64::from(t.0),
-        f64::from(t.1),
-        f64::from(t.2)
-    ));
-
     // Convert to HSL
-    let mut hsl = Hsl::from(&rgb);
+    let mut hsl = get_hsl(t);
     let current_lightness = hsl.get_lightness();
 
     if darker
@@ -239,13 +231,13 @@ pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8
     }
 
     // Convert back to RGB
-    let rgb2 = Rgb::from(&hsl);
+    let rgb = Rgb::from(&hsl);
 
     // Return RGB tuple
     (
-        rgb2.get_red().round() as u8, 
-        rgb2.get_green().round() as u8, 
-        rgb2.get_blue().round() as u8
+        rgb.get_red().round() as u8, 
+        rgb.get_green().round() as u8, 
+        rgb.get_blue().round() as u8
     )
 }
 
@@ -277,6 +269,45 @@ pub fn make_color_darker(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 pub fn make_color_lighter(t: (u8, u8, u8), amount: f64) -> (u8, u8, u8)
 {
     change_color_lightness(t, false, amount)
+}
+
+/// Converts the RGB to a HSL
+/// and returns the hue value.
+/// 
+/// # Example
+/// 
+/// use colorskill::get_color_hue;
+/// let hue = get_color_hue((34, 84, 39));
+pub fn get_color_hue(t: (u8, u8, u8)) -> f64
+{
+    let hsl = get_hsl(t);
+    round_float(hsl.get_hue())
+}
+
+/// Converts the RGB to a HSL
+/// and returns the saturation value.
+/// 
+/// # Example
+/// 
+/// use colorskill::get_color_saturation;
+/// let saturation = get_color_saturation((34, 84, 39));
+pub fn get_color_saturation(t: (u8, u8, u8)) -> f64
+{
+    let hsl = get_hsl(t);
+    round_float(hsl.get_saturation())
+}
+
+/// Converts the RGB to a HSL
+/// and returns the lightness value.
+/// 
+/// # Example
+/// 
+/// use colorskill::get_color_lightness;
+/// let lightness = get_color_lightness((34, 84, 39));
+pub fn get_color_lightness(t: (u8, u8, u8)) -> f64
+{
+    let hsl = get_hsl(t);
+    round_float(hsl.get_lightness())
 }
 
 /// Generates a random RGB tuple.
@@ -653,6 +684,42 @@ impl RGB
         self.set_from_tuple(random_color());
     }
 
+    /// Returns the HSL hue value
+    /// 
+    /// # Example
+    /// 
+    /// use colorskill::RGB;
+    /// let c = RGB::new(34, 66, 94);
+    /// let hue = c.get_hue();
+    pub fn get_hue(&self) -> f64
+    {
+        get_color_hue(self.get_tuple())
+    }
+
+    /// Returns the HSL saturation value
+    /// 
+    /// # Example
+    /// 
+    /// use colorskill::RGB;
+    /// let c = RGB::new(34, 66, 94);
+    /// let saturation = c.get_saturation();
+    pub fn get_saturation(&self) -> f64
+    {
+        get_color_saturation(self.get_tuple())
+    }
+
+    /// Returns the HSL lightness value
+    /// 
+    /// # Example
+    /// 
+    /// use colorskill::RGB;
+    /// let c = RGB::new(34, 66, 94);
+    /// let lightness = c.get_lightness();
+    pub fn get_lightness(&self) -> f64
+    {
+        get_color_lightness(self.get_tuple())
+    }
+
     /// Turns the RGB into a string.
     /// 
     /// See the to_string definition 
@@ -752,6 +819,27 @@ fn clean_string(s: &str) -> String
     s.to_lowercase().replace(" ", "")
 }
 
+// Converts a tuple to a colorsys Hsl
+fn get_hsl(t: (u8, u8, u8)) -> Hsl
+{
+    let rgb = Rgb::from
+    (
+        (
+            f64::from(t.0),
+            f64::from(t.1),
+            f64::from(t.2)
+        )
+    );
+
+    Hsl::from(&rgb)
+}
+
+// Rounds a float to 2 decimal numbers
+fn round_float(n: f64) -> f64
+{
+    (n * 100.0).round() / 100.0
+}
+
 // Unit Tests
 
 #[cfg(test)]
@@ -827,6 +915,14 @@ mod tests
     }
 
     #[test]
+    fn hsl_test()
+    {
+        assert_eq!(get_color_hue((120, 239, 64)), 100.80);
+        assert_eq!(get_color_saturation((120, 239, 64)), 84.54);
+        assert_eq!(get_color_lightness((120, 239, 64)), 59.41);
+    }
+
+    #[test]
     fn tuple_test()
     {
         let mut c = RGB::new(0, 0, 0);
@@ -872,6 +968,10 @@ mod tests
         assert_eq!(c2.get_red(), 152);
         assert_eq!(c2.get_green(), 140);
         assert_eq!(c2.get_blue(), 139);
+
+        assert_eq!(c2.get_hue(), 4.62);
+        assert_eq!(c2.get_saturation(), 5.94);
+        assert_eq!(c2.get_lightness(), 57.06);
 
         c2.randomize();
     }
