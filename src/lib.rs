@@ -1,5 +1,4 @@
 use rand::Rng;
-use colorsys::{Rgb, Hsl};
 
 /// These are the percentages used to
 /// make colors darker or lighter
@@ -230,15 +229,7 @@ pub fn change_color_lightness(t: (u8, u8, u8), darker: bool, amount: f64) -> (u8
         hsl.set_lightness(lightness);
     }
 
-    // Convert back to RGB
-    let rgb = Rgb::from(&hsl);
-
-    // Return RGB tuple
-    (
-        rgb.get_red().round() as u8, 
-        rgb.get_green().round() as u8, 
-        rgb.get_blue().round() as u8
-    )
+    get_rgb_tuple_from_hsl(&hsl)
 }
 
 /// Wrapper function to make a color darker.
@@ -820,9 +811,9 @@ fn clean_string(s: &str) -> String
 }
 
 // Converts a tuple to a colorsys Hsl
-fn get_hsl(t: (u8, u8, u8)) -> Hsl
+fn get_hsl(t: (u8, u8, u8)) -> colorsys::Hsl
 {
-    let rgb = Rgb::from
+    let rgb = colorsys::Rgb::from
     (
         (
             f64::from(t.0),
@@ -831,7 +822,21 @@ fn get_hsl(t: (u8, u8, u8)) -> Hsl
         )
     );
 
-    Hsl::from(&rgb)
+    colorsys::Hsl::from(&rgb)
+}
+
+// Returns an RGB tuple from an Hsl
+fn get_rgb_tuple_from_hsl(hsl: &colorsys::Hsl) -> (u8, u8, u8)
+{
+    // Convert to RGB
+    let rgb = colorsys::Rgb::from(hsl);
+
+    // Return RGB tuple
+    (
+        rgb.get_red().round() as u8, 
+        rgb.get_green().round() as u8, 
+        rgb.get_blue().round() as u8
+    )
 }
 
 // Rounds a float to 2 decimal numbers
