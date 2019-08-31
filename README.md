@@ -11,5 +11,9 @@ or used with the provided RGB struct.
 - Make a color darker
 - Get a random color
 - Parse color strings
+- Get color hue degrees
+- Get color saturation %
+- Get color lightness %
+- Return string versions 
 
 Refer to the documentation for details.

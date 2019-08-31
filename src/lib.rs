@@ -679,9 +679,11 @@ impl RGB
     /// 
     /// # Example
     /// 
+    /// ```
     /// use colorskill::RGB;
     /// let c = RGB::new(34, 66, 94);
     /// let hue = c.get_hue();
+    /// ```
     pub fn get_hue(&self) -> f64
     {
         get_color_hue(self.get_tuple())
@@ -691,9 +693,11 @@ impl RGB
     /// 
     /// # Example
     /// 
+    /// ```
     /// use colorskill::RGB;
     /// let c = RGB::new(34, 66, 94);
     /// let saturation = c.get_saturation();
+    /// ```
     pub fn get_saturation(&self) -> f64
     {
         get_color_saturation(self.get_tuple())
@@ -703,9 +707,11 @@ impl RGB
     /// 
     /// # Example
     /// 
+    /// ```
     /// use colorskill::RGB;
     /// let c = RGB::new(34, 66, 94);
     /// let lightness = c.get_lightness();
+    /// ```
     pub fn get_lightness(&self) -> f64
     {
         get_color_lightness(self.get_tuple())
