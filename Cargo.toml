@@ -1,13 +1,13 @@
 [package]
 name = "colorskill"
-version = "1.0.4"
+version = "1.1.0"
 authors = ["madprops"]
 edition = "2018"
 description = "Some useful color manipulation functions"
 license = "MIT"
 homepage = "https://github.com/madprops/colorskill"
 repository = "https://github.com/madprops/colorskill.git"
-keywords = ["colors", "converter", "rgb", "hsl"]
+keywords = ["colors", "converter", "rgb"]
 categories = [ "graphics"]
 readme = "README.md"
 
